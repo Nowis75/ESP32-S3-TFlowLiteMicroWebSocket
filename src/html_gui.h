@@ -32,8 +32,8 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
 
     // Parametry modelu a canvasu
     const GRID_SIZE = 12;
-    const DIST_THRESHOLD = 1.5;  // max. vzdálenost v gridových jednotkách
-    const CONFIDENCE_THRESHOLD = 0.65;  // filtr slabých detekcí
+    const DIST_THRESHOLD = 1.5;  // max length in grid units / max. vzdálenost v gridových jednotkách
+    const CONFIDENCE_THRESHOLD = 0.65;  // filter of light detection / filtr slabých detekcí
     const CELL_WIDTH = canvas.width / GRID_SIZE;
     const CELL_HEIGHT = canvas.height / GRID_SIZE;
 
@@ -60,7 +60,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
             if (!added) groups.push([d]);
         });
 
-        // Z každé skupiny spočítáme průměrný centroid
+        // From every group calsulate sum fo centroid / Z každé skupiny spočítáme průměrný centroid
         const aggregated = groups.map(group => {
             const x = group.reduce((sum, d) => sum + d.x, 0) / group.length;
             const y = group.reduce((sum, d) => sum + d.y, 0) / group.length;
@@ -71,7 +71,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
         return aggregated;
     }
 
-    // WebSocket - přijímání detekcí  
+    // WebSocket - recieve detections / přijímání detekcí  
     let latestDetections = [];
 
     ws.onmessage = ({ data }) => {
@@ -82,7 +82,7 @@ const char INDEX_HTML[] PROGMEM = R"rawliteral(
         latestDetections = detections.filter(d => d.confidence >= CONFIDENCE_THRESHOLD);
         }
     } catch (err) {
-        console.error("Chyba při parsování JSON:", err);
+        console.error("Error in parsing / Chyba při parsování JSON:", err);
     }
     };
 

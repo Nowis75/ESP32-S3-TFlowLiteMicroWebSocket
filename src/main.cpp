@@ -1,4 +1,4 @@
-// 🚀 Přepracovaný TFLite FOMO detekční server pro ESP32-S3 s MJPEG streamem a WebSocket výstupem centroidů
+// TFLite FOMO deteection server for ESP32-S3 with MJPEG stream and WebSocket output of centroids
 
 #include <WiFi.h>
 #include <WebSocketsServer.h>
@@ -119,19 +119,19 @@ esp_err_t stream_handler(httpd_req_t *req) {
             continue;
         }
 
-        // Převod GRAYSCALE frame → JPEG
+        // Convert GRAYSCALE frame → JPEG
         uint8_t* jpg_buf = NULL;
         size_t jpg_len = 0;
         bool jpeg_ok = frame2jpg(fb, 80, &jpg_buf, &jpg_len); // kvalita 80 %
 
-        esp_camera_fb_return(fb); // frame můžeš rovnou uvolnit
+        esp_camera_fb_return(fb); // frame can empty after conversion
 
         if (!jpeg_ok || jpg_buf == nullptr) {
             Serial.println("Chyba při převodu frame na JPEG");
             continue;
         }
 
-        // Odeslání hlavičky a JPEG
+        // Send header and JPEG
         size_t hlen = snprintf(part_buf, sizeof(part_buf),
             "--%s\r\nContent-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n",
             boundary, (unsigned int)jpg_len);
@@ -140,10 +140,10 @@ esp_err_t stream_handler(httpd_req_t *req) {
             httpd_resp_send_chunk(req, (const char *)jpg_buf, jpg_len) != ESP_OK ||
             httpd_resp_send_chunk(req, "\r\n", 2) != ESP_OK) {
             free(jpg_buf);
-            break; // klient přerušil spojení
+            break; // client disconnected
         }
 
-        free(jpg_buf); // uvolni JPEG paměť
+        free(jpg_buf); // free JPEG memmory
 
         vTaskDelay(pdMS_TO_TICKS(33)); // ~30 FPS
     }
@@ -310,9 +310,9 @@ void setup() {
     webSocket.begin();
     webSocket.onEvent(webSocketEvent);
     Serial.println("WebSocket server běží na portu 81");
-    // Spuštění inference na Core 1
+    // Run inference on Core 1
     xTaskCreatePinnedToCore(inferenceTask, "InferenceTask", 8192, NULL, 2, NULL, 1);
-    // WebSocket na Core 0
+    // WebSocket on Core 0
     xTaskCreatePinnedToCore(webSocketTask, "WebSocketTask", 4096, NULL, 1, NULL, 0);
     startWebSocketServer();
 }
