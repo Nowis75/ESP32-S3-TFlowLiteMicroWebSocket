@@ -6,3 +6,9 @@ The project introduces a dual-threaded architecture utilizing both cores of the 
 
 Implementation details such as image downsampling, normalization for the quantized model, efficient video stream encoding, and thread synchronization are discussed in depth. The prototype achieves a smooth video stream (~30 FPS) with overlaid detection visualization and inference latency in the order of tens of milliseconds per evaluation. The results confirm that even on highly resource-constrained hardware, it is possible to implement a fully functional edge AI application for object detection with real-time visual feedback.
 
+<p align="center">
+  <img src="images/ascii_view.png" width="600" alt="Architecture Diagram">
+</p>
+<p align="center">
+  <img src="images/real_view.png" width="600" alt="Architecture Diagram">
+</p>
