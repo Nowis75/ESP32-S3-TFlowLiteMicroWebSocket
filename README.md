@@ -1,5 +1,8 @@
 # Optimized Edge AI system for real-time visualization of FOMO object detection 
 
+[![Project Status: Active](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 This project presents an extension and optimization of a system for visualizing object detection results on the ESP32-S3 microcontroller. It builds upon previous work in which the FOMO (Faster Objects, More Objects) model was optimized for embedded systems, and focuses on a complete end-to-end solution — from camera image acquisition, through inference of a quantized neural network model, to real-time visualization of detected objects in a web browser.
 
 The project introduces a dual-threaded architecture utilizing both cores of the ESP32-S3, including a web server for video streaming (MJPEG) and a WebSocket server for real-time transmission of detections. Emphasis is placed on optimizing computational and memory efficiency. The inference runs on a dedicated core, external PSRAM is used for tensor allocation, and tasks are parallelized using FreeRTOS, with data access synchronized through mutexes and communication bandwidth minimized by sending only JSON centroid data.
