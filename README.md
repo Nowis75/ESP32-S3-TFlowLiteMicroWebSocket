@@ -1,4 +1,4 @@
-# ESP32‑S3 FOMO: Real‑Time Centroid Detection with MJPEG + WebSocket
+# Optimized Edge AI system for real-time visualization of FOMO object detection 
 
 This project presents an extension and optimization of a system for visualizing object detection results on the ESP32-S3 microcontroller. It builds upon previous work in which the FOMO (Faster Objects, More Objects) model was optimized for embedded systems, and focuses on a complete end-to-end solution — from camera image acquisition, through inference of a quantized neural network model, to real-time visualization of detected objects in a web browser.
 
